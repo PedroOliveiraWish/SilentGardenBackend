@@ -1,19 +1,13 @@
 package com.silentgarden.silentgarden.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.util.Date;
+import java.util.*;
 
 @Entity
 @Table(name = "usuario")
@@ -23,16 +17,22 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank(message = "username cannot be blank")
+    @NotNull
     private String username;
 
-    @NotBlank(message = "password cannot be blank")
+    @NotNull
     @Size(min = 6, max = 255, message = "password must be at least 6 characters")
     private String password;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date created_at;
+
+    @OneToMany(mappedBy = "user")
+    private List<Quote> quotes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<SavedQuote> savedQuotes = new ArrayList<>();
 
     public User() {};
 
@@ -41,7 +41,7 @@ public class User {
         this.password = password;
     }
 
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 
@@ -63,6 +63,10 @@ public class User {
 
     public Date getCreated_at() {
         return created_at;
+    }
+
+    public List<Quote> getQuotes() {
+        return quotes;
     }
 }
 

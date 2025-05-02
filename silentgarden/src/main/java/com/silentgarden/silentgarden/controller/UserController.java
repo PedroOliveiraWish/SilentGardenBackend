@@ -2,10 +2,12 @@ package com.silentgarden.silentgarden.controller;
 
 import com.silentgarden.silentgarden.model.User;
 import com.silentgarden.silentgarden.repository.UserRepository;
+import com.silentgarden.silentgarden.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
@@ -24,8 +26,14 @@ public class UserController {
         return newUser;
     }
 
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    @GetMapping("/get-all-users")
+    public List<UserDTO> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(user -> new UserDTO(
+                        user.getUsername(),
+                        user.getCreated_at()
+                ))
+                .collect(Collectors.toList());
     }
 }
