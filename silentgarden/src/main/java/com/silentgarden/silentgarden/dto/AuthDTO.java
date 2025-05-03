@@ -1,11 +1,11 @@
 package com.silentgarden.silentgarden.dto;
 
-public class LoginDTO {
+public class AuthDTO {
 
     private final String username;
     private final String password;
 
-    public LoginDTO(String username, String password) {
+    public AuthDTO(String username, String password) {
         this.username = username;
         this.password = password;
     }

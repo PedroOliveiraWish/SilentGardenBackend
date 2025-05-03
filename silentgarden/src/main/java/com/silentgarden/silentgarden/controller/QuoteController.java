@@ -3,7 +3,10 @@ package com.silentgarden.silentgarden.controller;
 import com.silentgarden.silentgarden.model.Quote;
 import com.silentgarden.silentgarden.repository.QuoteRepository;
 import com.silentgarden.silentgarden.dto.QuoteDTO;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,29 +20,63 @@ public class QuoteController {
     @Autowired
     private QuoteRepository quoteRepository;
 
-    @PostMapping
-    public Quote createQuote(@RequestBody Quote quote) {
-        Quote newQuote = quoteRepository.save(quote);
+    @PostMapping("/save-quote")
+    public ResponseEntity<?> createQuote(@RequestBody @Valid Quote quote) {
+        if (quote == null) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("quote cannot be null");
+        }
 
-        System.out.println(("Quote created: " + newQuote.getQuote_text()));
+        quoteRepository.save(quote);
 
-        return newQuote;
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("Quote created successfully");
     }
 
-    @GetMapping
-    public List<Quote> getAllQuotes() {
-        return quoteRepository.findAll();
-    }
+    @GetMapping("/get-all")
+    public ResponseEntity<?> getAllQuotes() {
+        List<Quote> allQuotes = quoteRepository.findAll();
 
-    @GetMapping("/user/{id}")
-    public List<QuoteDTO> getQuoteByUserId(@PathVariable Integer id) {
-        return quoteRepository.findByUserId(id)
+        List<QuoteDTO> allQuotesDTO = allQuotes
                 .stream()
                 .map(quote -> new QuoteDTO(
+                        quote.getId(),
                         quote.getQuote_text(),
                         quote.getUser().getUsername(),
                         quote.getCreated_at()
                 ))
-                .collect(Collectors.toList());
+                .toList();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(allQuotesDTO);
+    }
+
+    @GetMapping("/{user_id}")
+    public ResponseEntity<?> getQuoteByUserId(@PathVariable("user_id") @Valid Integer userId) {
+
+        System.out.println(userId + " User id");
+
+        if (userId == null) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("userId is necessary");
+        }
+
+        List<QuoteDTO> listQuote = quoteRepository.findByUserId(userId)
+                .stream()
+                .map(quote -> new QuoteDTO(
+                        quote.getId(),
+                        quote.getQuote_text(),
+                        quote.getUser().getUsername(),
+                        quote.getCreated_at()
+                ))
+                .toList();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(listQuote);
     }
 }

@@ -6,14 +6,16 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.util.*;
 
 @Entity
-@Table(name = "quote")
-public class Quote {
+@Table(name = "journal")
+public class Journal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String quote_text;
+    private String title;
+
+    private String content;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -23,13 +25,11 @@ public class Quote {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "quote")
-    private List<SavedQuote> savedQuotes = new ArrayList<>();
+    public Journal() {};
 
-    public Quote() {};
-
-    public Quote( String quote_text, User user) {
-        this.quote_text = quote_text;
+    public Journal(String title, String content, User user) {
+        this.title = title;
+        this.content = content;
         this.user = user;
     }
 
@@ -37,16 +37,24 @@ public class Quote {
         return id;
     }
 
-    public String getQuote_text() {
-        return quote_text;
-    }
-
-    public void setQuote_text(String quote_text) {
-        this.quote_text = quote_text;
-    }
-
     public Date getCreated_at() {
         return created_at;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public User getUser() {

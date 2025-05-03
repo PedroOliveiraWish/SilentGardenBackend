@@ -34,6 +34,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<SavedQuote> savedQuotes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Journal> journals = new ArrayList<>();
+
     public User() {};
 
     public User( String username, String password) {
@@ -67,6 +70,14 @@ public class User {
 
     public List<Quote> getQuotes() {
         return quotes;
+    }
+
+    public List<SavedQuote> getSavedQuotes() {
+        return savedQuotes;
+    }
+
+    public List<Journal> getJournals() {
+        return journals;
     }
 }
 
