@@ -32,7 +32,7 @@ public class QuoteController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body("Quote created successfully");
+                .body(quote);
     }
 
     @GetMapping("/get-all")

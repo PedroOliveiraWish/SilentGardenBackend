@@ -2,6 +2,7 @@ package com.silentgarden.silentgarden.controller;
 
 import com.silentgarden.silentgarden.model.User;
 import com.silentgarden.silentgarden.dto.AuthDTO;
+import com.silentgarden.silentgarden.dto.UserDTO;
 import com.silentgarden.silentgarden.repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,11 @@ public class AuthController {
                     .body("Invalid username or password");
         }
 
+        UserDTO userDTO = new UserDTO(user.getId(), user.getUsername());
+
         return ResponseEntity
-                .status(HttpStatus.ACCEPTED)
-                .body("Login successfully");
+                .status(HttpStatus.OK)
+                .body(userDTO);
     }
 
     @PostMapping("/register")
@@ -45,7 +48,7 @@ public class AuthController {
         userRepository.save(registerUser);
 
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.OK)
                 .body("User created successfully");
     }
 }

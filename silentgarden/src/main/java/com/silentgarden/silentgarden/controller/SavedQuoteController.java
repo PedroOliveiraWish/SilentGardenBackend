@@ -32,7 +32,7 @@ public class SavedQuoteController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body("Quote saved successfully");
+                .body(quote);
     }
 
     @GetMapping("/{user_id}")

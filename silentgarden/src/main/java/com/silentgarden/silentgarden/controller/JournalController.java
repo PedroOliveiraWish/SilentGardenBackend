@@ -30,8 +30,8 @@ public class JournalController {
         journalRepository.save(journal);
 
         return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body("Journal created successfully");
+                .status(HttpStatus.OK)
+                .body(journal);
     }
 
     @GetMapping("/{user_id}")
