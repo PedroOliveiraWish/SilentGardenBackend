@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("auth")
 @CrossOrigin(origins = "*")
@@ -49,6 +51,6 @@ public class AuthController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body("User created successfully");
+                .body(Map.of("message", "User created successfully"));
     }
 }
