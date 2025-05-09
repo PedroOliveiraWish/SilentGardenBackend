@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/quotes")
@@ -25,7 +25,7 @@ public class QuoteController {
         if (quote == null) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body("quote cannot be null");
+                    .body(Map.of("message", "quote cannot be null"));
         }
 
         quoteRepository.save(quote);
@@ -62,7 +62,7 @@ public class QuoteController {
         if (userId == null) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body("userId is necessary");
+                    .body(Map.of("message", "userId is necessary"));
         }
 
         List<QuoteDTO> listQuote = quoteRepository.findByUserId(userId)

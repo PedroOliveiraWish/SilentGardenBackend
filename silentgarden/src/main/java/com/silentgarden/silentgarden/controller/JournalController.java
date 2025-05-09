@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/journals")
@@ -24,7 +25,7 @@ public class JournalController {
         if (journal == null) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body("Journal cannot be null");
+                    .body(Map.of("message", "Journal cannot be null"));
         }
 
         journalRepository.save(journal);
@@ -39,7 +40,7 @@ public class JournalController {
         if (userId == null) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body("User id is necessary");
+                    .body(Map.of("message", "User id is necessary"));
         }
 
         List<JournalDTO> listJournal = journalRepository.findByUserId(userId)
